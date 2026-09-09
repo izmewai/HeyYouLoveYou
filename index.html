@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Little Surprise for Jennie</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,body{
+    width:100%;
+    min-height:100%;
+    overflow-x:hidden;
+}
+
+body{
+    background:#000;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+/* =========================
+   HORROR INTRO
+========================= */
+
+#intro{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    background:
+        radial-gradient(circle at center,#171717 0%,#050505 45%,#000 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    transition:opacity 1.5s ease, visibility 1.5s ease;
+}
+
+#intro.hide{
+    opacity:0;
+    visibility:hidden;
+}
+
+.horror-content{
+    position:relative;
+    z-index:5;
+    text-align:center;
+    padding:20px;
+}
+
+.wait{
+    color:#eee;
+    font-size:clamp(45px,13vw,110px);
+    font-weight:900;
+    letter-spacing:5px;
+    text-shadow:
+        0 0 5px #fff,
+        0 0 15px #aaa,
+        0 0 35px #555;
+    animation:
+        shake .12s infinite,
+        horrorFlicker 2s infinite;
+}
+
+.subtitle{
+    margin-top:25px;
+    color:#777;
+    font-size:14px;
+    letter-spacing:6px;
+    animation:flicker 1.5s infinite;
+}
+
+.countdown{
+    margin-top:30px;
+    color:white;
+    font-size:clamp(70px,18vw,150px);
+    font-weight:bold;
+    text-shadow:0 0 30px white;
+}
+
+/* Spider webs */
+
+.web{
+    position:absolute;
+    width:280px;
+    height:280px;
+    opacity:.35;
+}
+
+.web.left{
+    left:-70px;
+    top:-60px;
+}
+
+.web.right{
+    right:-70px;
+    bottom:-60px;
+    transform:rotate(180deg);
+}
+
+.web svg{
+    width:100%;
+    height:100%;
+}
+
+.spider{
+    position:absolute;
+    font-size:55px;
+    opacity:.6;
+    animation:spiderMove 4s ease-in-out infinite;
+}
+
+.spider.one{
+    top:8%;
+    left:15%;
+}
+
+.spider.two{
+    bottom:10%;
+    right:15%;
+    animation-delay:1.5s;
+}
+
+.fog{
+    position:absolute;
+    width:450px;
+    height:450px;
+    border-radius:50%;
+    background:rgba(255,255,255,.025);
+    filter:blur(60px);
+    animation:fogMove 8s infinite alternate;
+}
+
+/* =========================
+   SURPRISE
+========================= */
+
+#surprise{
+    min-height:100vh;
+    position:relative;
+    overflow:hidden;
+    opacity:0;
+    transform:scale(.96);
+    transition:opacity 2s ease,transform 2s ease;
+    background:
+        radial-gradient(circle at 50% 30%,#38204d 0%,#160d25 35%,#070510 75%,#020204 100%);
+}
+
+#surprise.show{
+    opacity:1;
+    transform:scale(1);
+}
+
+/* Stars */
+
+.stars{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    pointer-events:none;
+}
+
+.star{
+    position:absolute;
+    width:4px;
+    height:4px;
+    border-radius:50%;
+    background:white;
+    box-shadow:0 0 10px white;
+    animation:twinkle 2s infinite ease-in-out;
+}
+
+.star:nth-child(1){left:8%;top:15%;animation-delay:.2s}
+.star:nth-child(2){left:20%;top:28%;animation-delay:1s}
+.star:nth-child(3){left:35%;top:10%;animation-delay:.5s}
+.star:nth-child(4){left:50%;top:23%;animation-delay:1.4s}
+.star:nth-child(5){left:67%;top:12%;animation-delay:.8s}
+.star:nth-child(6){left:80%;top:30%;animation-delay:.3s}
+.star:nth-child(7){left:92%;top:17%;animation-delay:1.2s}
+.star:nth-child(8){left:12%;top:55%;animation-delay:.7s}
+.star:nth-child(9){left:87%;top:58%;animation-delay:1.1s}
+.star:nth-child(10){left:25%;top:72%;animation-delay:.4s}
+.star:nth-child(11){left:73%;top:75%;animation-delay:1.5s}
+.star:nth-child(12){left:55%;top:88%;animation-delay:.9s}
+
+/* Balloons */
+
+.balloon-area{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+}
+
+.balloon{
+    position:absolute;
+    bottom:-180px;
+    width:55px;
+    height:70px;
+    border-radius:50% 50% 48% 48%;
+    animation:balloonUp linear infinite;
+    filter:drop-shadow(0 0 12px rgba(255,255,255,.15));
+}
+
+.balloon:before{
+    content:"";
+    position:absolute;
+    bottom:-8px;
+    left:23px;
+    width:9px;
+    height:10px;
+    background:inherit;
+    transform:rotate(45deg);
+}
+
+.balloon:after{
+    content:"";
+    position:absolute;
+    top:65px;
+    left:27px;
+    width:1px;
+    height:130px;
+    background:rgba(255,255,255,.5);
+}
+
+.b1{
+    left:4%;
+    background:#e96ca8;
+    animation-duration:10s;
+}
+
+.b2{
+    left:20%;
+    background:#9f7aea;
+    animation-duration:13s;
+    animation-delay:2s;
+}
+
+.b3{
+    left:40%;
+    background:#f5a6d6;
+    animation-duration:11s;
+    animation-delay:1s;
+}
+
+.b4{
+    left:62%;
+    background:#8ec5ff;
+    animation-duration:14s;
+    animation-delay:3s;
+}
+
+.b5{
+    left:80%;
+    background:#d28cff;
+    animation-duration:12s;
+    animation-delay:1.5s;
+}
+
+.b6{
+    left:94%;
+    background:#ff9ccf;
+    animation-duration:15s;
+    animation-delay:4s;
+}
+
+/* Main content */
+
+.main{
+    position:relative;
+    z-index:10;
+    min-height:100vh;
+    padding:70px 20px 80px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+}
+
+.title{
+    color:white;
+    font-size:clamp(28px,8vw,55px);
+    font-weight:800;
+    letter-spacing:3px;
+    margin-bottom:12px;
+    opacity:0;
+    animation:titleIn 2s ease forwards;
+    animation-delay:1s;
+}
+
+.for-jennie{
+    color:#e9c6ff;
+    font-size:15px;
+    letter-spacing:5px;
+    opacity:0;
+    animation:fadeIn 2s forwards;
+    animation-delay:1.8s;
+}
+
+/* Photo */
+
+.photo-box{
+    width:min(86vw,390px);
+    margin-top:38px;
+    opacity:0;
+    transform:translateY(40px) scale(.9);
+    animation:photoIn 2s cubic-bezier(.17,.67,.24,1.2) forwards;
+    animation-delay:2.6s;
+}
+
+.photo{
+    width:100%;
+    aspect-ratio:4/5;
+    object-fit:cover;
+    border-radius:24px;
+    padding:5px;
+    background:linear-gradient(135deg,#fff,#dca8ff,#ffb8db,#fff);
+    box-shadow:
+        0 0 25px rgba(220,160,255,.35),
+        0 0 70px rgba(255,120,200,.18);
+}
+
+.message{
+    width:min(90vw,600px);
+    margin-top:35px;
+}
+
+.line{
+    color:white;
+    font-size:clamp(17px,4.5vw,24px);
+    line-height:1.7;
+    margin:8px 0;
+    opacity:0;
+    transform:translateY(20px);
+    animation:textIn 1.3s ease forwards;
+}
+
+.line:nth-child(1){animation-delay:4.5s}
+.line:nth-child(2){animation-delay:6s}
+.line:nth-child(3){animation-delay:7.5s}
+.line:nth-child(4){animation-delay:9s}
+
+.final-love{
+    margin-top:45px;
+    color:#ffb9dd;
+    font-size:clamp(45px,13vw,80px);
+    font-weight:900;
+    letter-spacing:5px;
+    opacity:0;
+    transform:scale(.6);
+    animation:loveIn 2s cubic-bezier(.17,.67,.24,1.3) forwards;
+    animation-delay:10.8s;
+    text-shadow:
+        0 0 10px #ff8bc8,
+        0 0 30px #ff5cad,
+        0 0 60px #ff3d9d;
+}
+
+.signature{
+    color:#aaa;
+    margin-top:15px;
+    font-size:13px;
+    letter-spacing:3px;
+    opacity:0;
+    animation:fadeIn 2s forwards;
+    animation-delay:12s;
+}
+
+/* Music element hidden */
+
+#audio1,
+#audio2{
+    display:none;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes shake{
+    0%{transform:translate(0,0)}
+    25%{transform:translate(-2px,1px)}
+    50%{transform:translate(2px,-1px)}
+    75%{transform:translate(-1px,-2px)}
+    100%{transform:translate(1px,1px)}
+}
+
+@keyframes horrorFlicker{
+    0%,18%,22%,63%,67%,100%{opacity:1}
+    20%,65%{opacity:.25}
+}
+
+@keyframes flicker{
+    0%,100%{opacity:.7}
+    50%{opacity:.2}
+}
+
+@keyframes spiderMove{
+    0%,100%{transform:translateY(-5px)}
+    50%{transform:translateY(25px)}
+}
+
+@keyframes fogMove{
+    from{transform:translate(-100px,-50px)}
+    to{transform:translate(100px,80px)}
+}
+
+@keyframes twinkle{
+    0%,100%{opacity:.2;transform:scale(.6)}
+    50%{opacity:1;transform:scale(1.5)}
+}
+
+@keyframes balloonUp{
+    0%{
+        transform:translateY(0) rotate(-4deg);
+        opacity:0;
+    }
+    10%{opacity:1}
+    50%{transform:translateY(-60vh) rotate(5deg)}
+    100%{
+        transform:translateY(-125vh) rotate(-5deg);
+        opacity:.8;
+    }
+}
+
+@keyframes titleIn{
+    from{
+        opacity:0;
+        transform:translateY(-25px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes fadeIn{
+    from{opacity:0}
+    to{opacity:1}
+}
+
+@keyframes photoIn{
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+@keyframes textIn{
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes loveIn{
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+@media(max-width:480px){
+    .wait{
+        letter-spacing:2px;
+    }
+
+    .subtitle{
+        letter-spacing:3px;
+    }
+
+    .main{
+        padding-top:55px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     HORROR INTRO
+========================= -->
+
+<section id="intro">
+
+    <div class="fog"></div>
+
+    <!-- Spider Web Left -->
+    <div class="web left">
+        <svg viewBox="0 0 300 300">
+            <g fill="none" stroke="#aaa" stroke-width="1">
+                <path d="M0 0 L300 300"/>
+                <path d="M0 60 L240 300"/>
+                <path d="M0 130 L170 300"/>
+                <path d="M0 200 L100 300"/>
+                <path d="M0 0 L0 300"/>
+                <path d="M60 0 L300 240"/>
+                <path d="M130 0 L300 170"/>
+                <path d="M200 0 L300 100"/>
+                <circle cx="0" cy="0" r="40"/>
+                <circle cx="0" cy="0" r="80"/>
+                <circle cx="0" cy="0" r="125"/>
+                <circle cx="0" cy="0" r="175"/>
+                <circle cx="0" cy="0" r="235"/>
+            </g>
+        </svg>
+    </div>
+
+    <!-- Spider Web Right -->
+    <div class="web right">
+        <svg viewBox="0 0 300 300">
+            <g fill="none" stroke="#aaa" stroke-width="1">
+                <path d="M0 0 L300 300"/>
+                <path d="M0 60 L240 300"/>
+                <path d="M0 130 L170 300"/>
+                <path d="M0 200 L100 300"/>
+                <path d="M0 0 L0 300"/>
+                <path d="M60 0 L300 240"/>
+                <path d="M130 0 L300 170"/>
+                <path d="M200 0 L300 100"/>
+                <circle cx="0" cy="0" r="40"/>
+                <circle cx="0" cy="0" r="80"/>
+                <circle cx="0" cy="0" r="125"/>
+                <circle cx="0" cy="0" r="175"/>
+                <circle cx="0" cy="0" r="235"/>
+            </g>
+        </svg>
+    </div>
+
+    <div class="spider one">🕷️</div>
+    <div class="spider two">🕷️</div>
+
+    <div class="horror-content">
+
+        <div class="wait">
+            ခဏစောင့်...
+        </div>
+
+        <div class="subtitle">
+            SOMETHING IS COMING
+        </div>
+
+        <div class="countdown" id="countdown">
+            10
+        </div>
+
+    </div>
+</section>
+
+
+<!-- =========================
+     SURPRISE PAGE
+========================= -->
+
+<section id="surprise">
+
+    <div class="stars">
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+    </div>
+
+    <div class="balloon-area">
+        <div class="balloon b1"></div>
+        <div class="balloon b2"></div>
+        <div class="balloon b3"></div>
+        <div class="balloon b4"></div>
+        <div class="balloon b5"></div>
+        <div class="balloon b6"></div>
+    </div>
+
+    <div class="main">
+
+        <div class="title">
+            A LITTLE SURPRISE
+        </div>
+
+        <div class="for-jennie">
+            FOR JENNIE 🖤
+        </div>
+
+        <div class="photo-box">
+
+            <img
+                class="photo"
+                src="3ffa888be02f0b89c050384c01db74cf.jpg"
+                alt="Jennie"
+            >
+
+        </div>
+
+        <div class="message">
+
+            <div class="line">
+                Some people simply shine wherever they go.
+            </div>
+
+            <div class="line">
+                And somehow, you always make every moment brighter.
+            </div>
+
+            <div class="line">
+                Keep smiling, keep shining, and keep being wonderfully you.
+            </div>
+
+            <div class="line">
+                This little surprise is just a tiny reminder of how special you are.
+            </div>
+
+        </div>
+
+        <div class="final-love">
+            ချစ်တယ် ❤️
+        </div>
+
+        <div class="signature">
+            ALWAYS SHINE, JENNIE ✨
+        </div>
+
+    </div>
+</section>
+
+
+<!-- =========================
+     MUSIC
+========================= -->
+
+<audio
+    id="audio1"
+    src="VID_20260909_074846_969.mp4"
+    preload="auto">
+</audio>
+
+<audio
+    id="audio2"
+    src="VID_20260909_075043_531.mp4"
+    preload="auto"
+    loop>
+</audio>
+
+
+<script>
+
+const intro = document.getElementById("intro");
+const surprise = document.getElementById("surprise");
+
+const countdown = document.getElementById("countdown");
+
+const audio1 = document.getElementById("audio1");
+const audio2 = document.getElementById("audio2");
+
+let number = 10;
+
+/*
+   First music
+   Plays during the "ခဏစောင့်..." section.
+*/
+function playFirstMusic(){
+
+    audio1.currentTime = 0;
+
+    audio1.play().catch(() => {
+        /*
+          Some mobile browsers block audio
+          until the page has user interaction.
+        */
+    });
+}
+
+
+/*
+   Start the surprise.
+*/
+function startSurprise(){
+
+    // Stop first music completely
+    audio1.pause();
+    audio1.currentTime = 0;
+
+    // Hide horror screen
+    intro.classList.add("hide");
+
+    // Show surprise
+    surprise.classList.add("show");
+
+    // Start second music
+    audio2.currentTime = 0;
+
+    audio2.play().catch(() => {
+        /*
+          Browser autoplay protection.
+          No music button is intentionally added.
+        */
+    });
+}
+
+
+/*
+   Countdown
+*/
+playFirstMusic();
+
+const timer = setInterval(() => {
+
+    number--;
+
+    if(number <= 0){
+
+        countdown.textContent = "♡";
+
+        clearInterval(timer);
+
+        setTimeout(() => {
+            startSurprise();
+        },500);
+
+    }else{
+
+        countdown.textContent = number;
+
+    }
+
+},1000);
+
+
+/*
+   If first music finishes naturally,
+   make sure it stays stopped.
+*/
+audio1.addEventListener("ended", () => {
+    audio1.pause();
+    audio1.currentTime = 0;
+});
+
+</script>
+
+</body>
+</html>
